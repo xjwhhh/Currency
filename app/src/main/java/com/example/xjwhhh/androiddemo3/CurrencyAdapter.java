@@ -43,7 +43,7 @@ public class CurrencyAdapter extends ArrayAdapter<Currency> {
 
         // 根据货币数据设置ImageView和TextView的展现
         imageView.setImageResource(currency.getFlagId());
-        textView.setText(currency.getCode());
+        textView.setText(currency.getName());
 
         oneTeacherView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +53,7 @@ public class CurrencyAdapter extends ArrayAdapter<Currency> {
                 Intent intent = new Intent(getContext(), ConversionActivity.class);
 
                 // 往Intent中传入Currency相关的数据，供ConversionActivity使用
-                intent.putExtra("currency_code", currency.getCode());
+                intent.putExtra("currency_name", currency.getName());
                 intent.putExtra("currency_flag", currency.getFlagId());
 
                 getContext().startActivity(intent);

@@ -2,13 +2,22 @@ package com.example.xjwhhh.androiddemo3;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ConversionActivity extends AppCompatActivity {
+
+    Button convertButton;
+    ImageView firstCurrencyIcon;
+    Spinner firstCurrency;
+    ImageView secondCurrencyIcon;
+    Spinner secondCurrency;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,34 +28,64 @@ public class ConversionActivity extends AppCompatActivity {
         // 注意int imageId = getIntent().getIntExtra("currency_code", 0);语句中传入的属性名currency_code一定要写对，和putExtra()方法中的保持一致
         // 通常我们是通过定义常量的方式来定义这样的字符串名字，这里为了简单处理我们用了硬编码的方式。
         int flagId = getIntent().getIntExtra("currency_flag", 0);
-        String code = getIntent().getStringExtra("currency_code");
+        String name = getIntent().getStringExtra("currency_name");
 
         // 获取特定的视图
-        ImageView firstCurrencyIcon = (ImageView) findViewById(R.id.firstCurrencyIcon);
-        Spinner firstCurrency = (Spinner) findViewById(R.id.firstCurrency);
+        firstCurrencyIcon = (ImageView) findViewById(R.id.firstCurrencyIcon);
+         firstCurrency = (Spinner) findViewById(R.id.firstCurrency);
 
         // 根据数据设置视图展现
         firstCurrencyIcon.setImageResource(flagId);
         ArrayList<String> data_list = new ArrayList<>();
-        data_list.add("China");
-        data_list.add("America");
+        List<Currency> currencyList=Currency.getAllCurrencies();
+        for(int i=0;i<currencyList.size();i++){
+            data_list.add(currencyList.get(i).getName());
+        }
 
         ArrayAdapter<String> currency_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data_list);
 
         firstCurrency.setAdapter(currency_adapter);
+
+        //跳转到汇率转换界面后第一个货币为首页点的那个
         int k = currency_adapter.getCount();
         for (int i = 0; i < k; i++) {
-            if (code.equals(currency_adapter.getItem(i))) {
+            System.out.println(currency_adapter.getItem(i));
+            if (name.equals(currency_adapter.getItem(i))) {
                 firstCurrency.setSelection(i, true);
+                break;
             }
-            break;
         }
 
-        Spinner secondCurrency = (Spinner) findViewById(R.id.secondCurrency);
+        secondCurrency = (Spinner) findViewById(R.id.secondCurrency);
         secondCurrency.setAdapter(currency_adapter);
 
         //TODO 选中代码后设置国旗
 
+        convertButton=(Button)findViewById(R.id.convertButton);
+
+
+    }
+
+    class ButtonListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view) {
+            String firstCurrencyCode="";
+            String secondCurrencyCode="";
+            List<Currency> currencyList=Currency.getAllCurrencies();
+            for(int i=0;i<currencyList.size();i++){
+                if(firstCurrency.getSelectedItem().equals(currencyList.get(i).getName())){
+                    firstCurrencyCode=currencyList.get(i).getCode();
+                    break;
+                }
+            }
+            for(int i=0;i<currencyList.size();i++){
+                if(secondCurrency.getSelectedItem().equals(currencyList.get(i).getName())){
+                    secondCurrencyCode=currencyList.get(i).getCode();
+                    break;
+                }
+            }
+        }
     }
 
 }
