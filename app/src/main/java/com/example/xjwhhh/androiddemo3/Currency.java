@@ -17,6 +17,7 @@ public class Currency {
     private String desc;
     private static JSONObject currency;
 
+
     //构造函数
     public Currency(String name,String code, int flagId, String desc) {
         this.name=name;
@@ -28,28 +29,23 @@ public class Currency {
 
     // 返回一个Currency的列表
     public static List<Currency> getAllCurrencies() {
-        List<Currency> currencies = new ArrayList<Currency>();
-        Data data=new Data();
-//        data.getRequest2();
-        try {
-            currency = new JSONObject(data.getRequest2().get("result").toString());
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-        try {
-            Iterator it = currency.keys();
-            while (it.hasNext()) {
-                String key = (String) it.next();
-                JSONArray array = currency.getJSONArray(key);
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject jsonobject = array.getJSONObject(i);
-                    //TODO 国家与国旗对应
-                    currencies.add(new Currency(jsonobject.get("name").toString(),jsonobject.get("code").toString(),R.drawable.china,jsonobject.get("name").toString()));
+        List<Currency> currencies=new ArrayList<>();
+            Data data = new Data();
+            try {
+                currency = new JSONObject(data.getRequest2().get("result").toString());
+                Iterator it = currency.keys();
+                while (it.hasNext()) {
+                    String key = (String) it.next();
+                    JSONArray array = currency.getJSONArray(key);
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject jsonobject = array.getJSONObject(i);
+                        //TODO 国家与国旗对应
+                        currencies.add(new Currency(jsonobject.get("name").toString(), jsonobject.get("code").toString(), R.drawable.china, jsonobject.get("name").toString()));
+                    }
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         return currencies;
     }
 

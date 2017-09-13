@@ -1,5 +1,6 @@
 package com.example.xjwhhh.androiddemo3;
 
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -9,6 +10,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         //初始化一个Adapter,第一个参数是this，表示传入的是当前的Activity

@@ -3,13 +3,12 @@ package com.example.xjwhhh.androiddemo3;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ConversionActivity extends AppCompatActivity {
 
@@ -18,6 +17,10 @@ public class ConversionActivity extends AppCompatActivity {
     Spinner firstCurrency;
     ImageView secondCurrencyIcon;
     Spinner secondCurrency;
+    TextView exchangeRateTextView;
+    String firstCurrencyCode="";
+    String secondCurrencyCode="";
+    ArrayList<String> exchangeRates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,6 @@ public class ConversionActivity extends AppCompatActivity {
         //跳转到汇率转换界面后第一个货币为首页点的那个
         int k = currency_adapter.getCount();
         for (int i = 0; i < k; i++) {
-            System.out.println(currency_adapter.getItem(i));
             if (name.equals(currency_adapter.getItem(i))) {
                 firstCurrency.setSelection(i, true);
                 break;
@@ -62,6 +64,8 @@ public class ConversionActivity extends AppCompatActivity {
         //TODO 选中代码后设置国旗
 
         convertButton=(Button)findViewById(R.id.convertButton);
+        ButtonListener buttonListener=new ButtonListener();
+        convertButton.setOnClickListener(buttonListener);
 
 
     }
@@ -70,8 +74,7 @@ public class ConversionActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            String firstCurrencyCode="";
-            String secondCurrencyCode="";
+
             List<Currency> currencyList=Currency.getAllCurrencies();
             for(int i=0;i<currencyList.size();i++){
                 if(firstCurrency.getSelectedItem().equals(currencyList.get(i).getName())){
@@ -85,7 +88,39 @@ public class ConversionActivity extends AppCompatActivity {
                     break;
                 }
             }
+            new Thread(runnable).start();
+
         }
     }
+
+    Runnable runnable=new Runnable() {
+        @Override
+        public void run() {
+
+            JSONObject rate=new JSONObject();
+            exchangeRates=new ArrayList<>();
+
+            rate=Data.getRequest3(firstCurrencyCode,secondCurrencyCode);
+            System.out.println(rate);
+//            try {
+//                rate = new JSONObject(rate.get("result").toString());
+//                System.out.println(rate);
+//                Iterator it =rate.keys();
+//                while (it.hasNext()) {
+//                    String key = (String) it.next();
+//                    JSONArray array = rate.getJSONArray(key);
+//                    for (int i = 0; i < array.length(); i++) {
+//                        JSONObject jsonobject = array.getJSONObject(i);
+//                        exchangeRates.add(jsonobject.get("result").toString());
+//                    }
+//                }
+//            }catch (JSONException e){
+//                e.printStackTrace();
+//            }
+//
+//            exchangeRateTextView=(TextView)findViewById(R.id.exchangeRateTextView);
+//            exchangeRateTextView.setText(exchangeRates.get(0));
+        }
+    };
 
 }
