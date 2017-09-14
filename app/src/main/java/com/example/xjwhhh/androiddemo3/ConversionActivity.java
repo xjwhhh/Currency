@@ -1,5 +1,6 @@
 package com.example.xjwhhh.androiddemo3;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,8 @@ import org.json.JSONObject;
 import java.util.*;
 
 public class ConversionActivity extends AppCompatActivity {
+
+    Handler handler;
 
     Button convertButton;
     ImageView firstCurrencyIcon;
@@ -67,6 +70,11 @@ public class ConversionActivity extends AppCompatActivity {
         ButtonListener buttonListener=new ButtonListener();
         convertButton.setOnClickListener(buttonListener);
 
+        handler=new Handler();
+        exchangeRateTextView=(TextView)findViewById(R.id.exchangeRateTextView);
+
+
+
 
     }
 
@@ -88,38 +96,47 @@ public class ConversionActivity extends AppCompatActivity {
                     break;
                 }
             }
+
             new Thread(runnable).start();
+
+
+
 
         }
     }
 
+    Runnable updateExchageRate=new Runnable() {
+        @Override
+        public void run() {
+            exchangeRateTextView.setText(exchangeRates.get(0));
+        }
+    };
+
     Runnable runnable=new Runnable() {
         @Override
         public void run() {
-
-            JSONObject rate=new JSONObject();
             exchangeRates=new ArrayList<>();
 
-            rate=Data.getRequest3(firstCurrencyCode,secondCurrencyCode);
-            System.out.println(rate);
-//            try {
-//                rate = new JSONObject(rate.get("result").toString());
-//                System.out.println(rate);
-//                Iterator it =rate.keys();
-//                while (it.hasNext()) {
-//                    String key = (String) it.next();
-//                    JSONArray array = rate.getJSONArray(key);
-//                    for (int i = 0; i < array.length(); i++) {
-//                        JSONObject jsonobject = array.getJSONObject(i);
-//                        exchangeRates.add(jsonobject.get("result").toString());
-//                    }
-//                }
-//            }catch (JSONException e){
-//                e.printStackTrace();
-//            }
-//
-//            exchangeRateTextView=(TextView)findViewById(R.id.exchangeRateTextView);
-//            exchangeRateTextView.setText(exchangeRates.get(0));
+            JSONObject rate=Data.getRequest3(firstCurrencyCode,secondCurrencyCode);
+//            System.out.println(rate);
+            try {
+                JSONArray rate1 = new JSONArray(rate.get("result").toString());
+//                System.out.println(rate1);
+                for(int i=0;i<rate1.length();i++){
+                    JSONObject jsonObject=rate1.getJSONObject(i);
+//                    System.out.println(jsonObject);
+//                    System.out.println(jsonObject.get("result").toString());
+                    exchangeRates.add(jsonObject.get("result").toString());
+                }
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+//            System.out.println("111");
+            handler.post(updateExchageRate);
+
+
+
         }
     };
 
