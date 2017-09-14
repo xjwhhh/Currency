@@ -63,6 +63,8 @@ public class ConversionActivity extends AppCompatActivity {
 
         secondCurrency = (Spinner) findViewById(R.id.secondCurrency);
         secondCurrency.setAdapter(currency_adapter);
+        secondCurrencyIcon=(ImageView)findViewById(R.id.secondCurrencyIcon);
+        secondCurrencyIcon.setImageResource(R.drawable.china);
 
         //TODO 选中代码后设置国旗
 

@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:background="@drawable/background1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
     <ImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/exchangeicon"
             android:id="@+id/firstCurrencyIcon"
+            android:layout_marginTop="50dp"
             android:layout_marginLeft="10dp"
     />
 
     <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="140dp"
             android:layout_height="32dp"
             android:text="Hello World!"
             android:id="@+id/firstCurrency"
             android:layout_toRightOf="@+id/firstCurrencyIcon"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="50dp"
     />
 
     <ImageView
@@ -26,39 +27,44 @@
             android:src="@drawable/exchangeicon"
             android:id="@+id/exchangeIcon"
             android:layout_toRightOf="@+id/firstCurrency"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
     />
 
     <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="140dp"
             android:layout_height="32dp"
             android:text="Hello World!"
             android:id="@+id/secondCurrency"
             android:layout_toRightOf="@+id/exchangeIcon"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="50dp"
     />
 
     <ImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/exchangeicon"
             android:id="@+id/secondCurrencyIcon"
             android:layout_toRightOf="@+id/secondCurrency"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="50dp"
     />
 
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="go"
+            android:text="exchange"
             android:id="@+id/convertButton"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
             android:layout_below="@+id/exchangeIcon"
     />
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20dp"
             android:id="@+id/exchangeRateTextView"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
             android:layout_below="@+id/convertButton"
     />
 
